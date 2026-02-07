@@ -21,3 +21,8 @@ steps:
     tags: |
       latest
       $(tag)
+    
+- script: |
+    curl -X POST -k https://89.116.20.215:9443/api/stacks/webhooks/a77005b0-989a-4f41-8a89-34ac35c4806e
+  displayName: 'Trigger Portainer webhook'
+  condition: succeeded()
