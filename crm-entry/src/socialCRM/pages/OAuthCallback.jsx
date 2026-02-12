@@ -9,15 +9,15 @@ export default function OAuthCallback() {
     const status = params.get("status");
 
     if (status === "connected") {
-      navigate("/dashboard");
+      navigate("/crm/socialmedia/dashboard", { replace: true });
     }
 
     if (status === "connected_select_resource") {
-      navigate("/facebook/pages/select");
+      navigate("/crm/socialmedia/dashboard");
     }
 
     if (!status) {
-      navigate("/");
+      navigate("/login");
     }
   }, []);
 

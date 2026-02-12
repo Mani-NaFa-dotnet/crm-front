@@ -40,11 +40,13 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://albertine-nonempathic-heaven.ngrok-free.dev",
+  baseURL: "http://89.116.20.215:9090/",
+  // baseURL: "https://crm.metagensoft.com/api/",
+  // baseURL: "https://albertine-nonempathic-heaven.ngrok-free.dev",
   // baseURL: "https://localhost:7246",
   headers: {
     "Content-Type": "application/json",
-    "ngrok-skip-browser-warning": "true", // 🔥 THIS IS THE FIX
+    "ngrok-skip-browser-warning": "true",
   },
 });
 

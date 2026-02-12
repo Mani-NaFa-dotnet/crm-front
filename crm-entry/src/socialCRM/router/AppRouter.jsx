@@ -8,21 +8,29 @@ import CreatePost from "../pages/CreatePost";
 import MultiPagePost from "../pages/MultiPagePost";
 import LeadForms from "../pages/LeadForms";
 import Leads from "../pages/Leads";
-
+import ProtectedRoute from "./ProtectedRoute";
+import PageSubscriptions from "../pages/PageSubscriptions";
+import TestPage from "../pages/TestPage";
 
 export default function AppRouter() {
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="/oauth/callback/facebook" element={<OAuthCallback />} />
-      <Route path="/facebook/pages/select" element={<PageSelection />} />
-      {/* Protected Dashboard */}
+      {/* Login routes */}
+      <Route path="login" element={<Login />} />
+      <Route path="oauth/callback/facebook" element={<OAuthCallback />} />
+      <Route path="facebook/pages/select" element={<PageSelection />} />
+      <Route path="test" element={<TestPage />} />
+      
+      {/* Dashboard - No Protection, freely accessible */}
       <Route element={<DashboardLayout />}>
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/post/create" element={<CreatePost />} />
-        <Route path="/post/multi" element={<MultiPagePost />} />
-        <Route path="/leads/forms" element={<LeadForms />} />
-        <Route path="/leads" element={<Leads />} />
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="post/create" element={<CreatePost />} />
+        {/* <Route path="post/multi" element={<MultiPagePost />} /> */}
+        <Route path="leads/forms" element={<LeadForms />} />
+        <Route path="leads" element={<Leads />} />
+        
+        {/* 🔥 NEW PAGE */}
+        <Route path="facebook/pages/subscriptions" element={<PageSubscriptions />} />
       </Route>
     </Routes>
   );

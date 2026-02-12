@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   getAvailablePages,
-  selectPage
+  selectPage,
+    subscribePage,
+  unsubscribePage
 } from "../api/facebook.pages.api";
 
 export default function PageSelection() {
@@ -17,7 +19,7 @@ export default function PageSelection() {
 
   const handleSelect = async (pageId) => {
     await selectPage(pageId);
-    navigate("/dashboard");
+    navigate("/crm/socialmedia/dashboard");
   };
 
   return (
@@ -39,7 +41,12 @@ export default function PageSelection() {
           <button onClick={() => handleSelect(p.pageId)}>
             Select
           </button>
-          <button onClick={() => subscribePage(p.pageId)}>
+          <button
+            onClick={() => {
+              console.log("Subscribe clicked:", p.pageId);
+              subscribePage(p.pageId);
+            }}
+          >
             Enable Auto Leads
           </button>
 

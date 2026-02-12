@@ -141,126 +141,205 @@ export default function RolePermissionsEditor({ role }) {
      ======================= */
   if (loading) {
     return (
-      <div className="text-sm text-slate-500">
-        Loading permissions…
+      <div className="flex items-center justify-center py-12">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-sm text-slate-600">Loading permissions...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-4">
-      {/* HEADER */}
-      <div>
-        <h3 className="text-lg font-medium text-slate-800">
-          {role.roleName}
-        </h3>
-        <p className="text-sm text-slate-500">
-          Manage permissions for this role
-        </p>
+    <div className="space-y-5">
+      {/* MODERN HEADER */}
+      <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl p-5 border border-purple-200">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center shadow-md">
+            <span className="text-xl">🛡️</span>
+          </div>
+          <div>
+            <h3 className="text-xl font-bold text-slate-800">
+              {role.roleName}
+            </h3>
+            <p className="text-sm text-slate-600 flex items-center gap-1.5">
+              <span>🔐</span>
+              <span>Manage permissions for this role</span>
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* ERROR */}
       {error && (
-        <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded px-3 py-2">
-          {error}
+        <div className="flex items-center gap-3 p-4 bg-red-50 border-2 border-red-200 rounded-xl">
+          <span className="text-2xl">⚠️</span>
+          <div className="flex-1">
+            <p className="text-sm font-semibold text-red-800">Error</p>
+            <p className="text-sm text-red-600">{error}</p>
+          </div>
         </div>
       )}
 
       {/* SUCCESS */}
       {success && (
-        <div className="text-sm text-green-700 bg-green-50 border border-green-200 rounded px-3 py-2">
-          Permissions updated successfully
+        <div className="flex items-center gap-3 p-4 bg-green-50 border-2 border-green-200 rounded-xl animate-slideIn">
+          <span className="text-2xl">✅</span>
+          <div className="flex-1">
+            <p className="text-sm font-semibold text-green-800">Success</p>
+            <p className="text-sm text-green-600">Permissions updated successfully</p>
+          </div>
         </div>
       )}
 
-      {/* PERMISSIONS */}
-      <div className="border rounded-md max-h-[420px] overflow-auto divide-y">
-        {Object.entries(permissionsByModule).map(([module, perms]) => {
-          const allChecked = perms.every((p) =>
-            selectedPermissions.has(p.permissionCode)
-          );
+      {/* PERMISSIONS GRID */}
+      <div className="bg-white rounded-xl border-2 border-slate-200 overflow-hidden">
+        <div className="max-h-[500px] overflow-y-auto">
+          <div className="divide-y divide-slate-200">
+            {Object.entries(permissionsByModule).map(([module, perms]) => {
+              const allChecked = perms.every((p) =>
+                selectedPermissions.has(p.permissionCode)
+              );
 
-          return (
-            <div key={module}>
-              {/* MODULE HEADER */}
-              <div className="flex items-center justify-between bg-slate-50 px-4 py-2 border-b">
-                <div className="font-medium text-slate-700">
-                  {module}
-                  <span className="ml-2 text-xs text-slate-400">
-                    ({perms.length})
-                  </span>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSelectedPermissions((prev) => {
-                      const next = new Set(prev);
-                      if (allChecked) {
-                        perms.forEach((p) =>
-                          next.delete(p.permissionCode)
-                        );
-                      } else {
-                        perms.forEach((p) =>
-                          next.add(p.permissionCode)
-                        );
-                      }
-                      return next;
-                    });
-                  }}
-                  className="text-xs text-blue-600 hover:underline"
-                >
-                  {allChecked ? "Clear all" : "Select all"}
-                </button>
-              </div>
-
-              {/* MODULE PERMISSIONS */}
-              <div className="divide-y">
-                {perms.map((perm) => {
-                  const checked = selectedPermissions.has(
-                    perm.permissionCode
-                  );
-
-                  return (
-                    <label
-                      key={perm.permissionCode}
-                      className="flex items-start gap-3 px-4 py-3 text-sm cursor-pointer hover:bg-slate-50"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={checked}
-                        onChange={() =>
-                          togglePermission(perm.permissionCode)
-                        }
-                        className="mt-1"
-                      />
-                      <div>
-                        <div className="font-medium text-slate-800">
-                          {perm.permissionCode}
-                        </div>
-                        {perm.description && (
-                          <div className="text-xs text-slate-500">
-                            {perm.description}
-                          </div>
-                        )}
+              return (
+                <div key={module} className="bg-white">
+                  {/* MODULE HEADER */}
+                  <div className="sticky top-0 z-10 bg-gradient-to-r from-slate-100 via-slate-50 to-white px-5 py-3 border-b border-slate-200 backdrop-blur-sm">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg">📦</span>
+                        <span className="font-bold text-slate-800 uppercase tracking-wide text-sm">
+                          {module}
+                        </span>
+                        <span className="px-2 py-0.5 bg-slate-200 text-slate-600 rounded-full text-xs font-semibold">
+                          {perms.length}
+                        </span>
                       </div>
-                    </label>
-                  );
-                })}
-              </div>
-            </div>
-          );
-        })}
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedPermissions((prev) => {
+                            const next = new Set(prev);
+                            if (allChecked) {
+                              perms.forEach((p) =>
+                                next.delete(p.permissionCode)
+                              );
+                            } else {
+                              perms.forEach((p) =>
+                                next.add(p.permissionCode)
+                              );
+                            }
+                            return next;
+                          });
+                          setSuccess(false);
+                        }}
+                        className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-purple-500 to-blue-600 text-white text-xs font-semibold rounded-lg hover:shadow-lg transition-all duration-200 transform hover:scale-105"
+                      >
+                        <span>{allChecked ? "✖️" : "✓"}</span>
+                        <span>{allChecked ? "Clear all" : "Select all"}</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* MODULE PERMISSIONS */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-100">
+                    {perms.map((perm, index) => {
+                      const checked = selectedPermissions.has(
+                        perm.permissionCode
+                      );
+
+                      return (
+                        <label
+                          key={perm.permissionCode}
+                          className={`flex items-start gap-3 px-5 py-4 cursor-pointer transition-all duration-150 hover:bg-gradient-to-r hover:from-purple-50/50 hover:to-blue-50/50 group ${
+                            checked ? "bg-gradient-to-r from-green-50/30 to-emerald-50/30" : ""
+                          } ${index % 2 === 0 && perms.length % 2 !== 0 && index === perms.length - 1 ? "md:col-span-2" : ""}`}
+                        >
+                          {/* CUSTOM CHECKBOX */}
+                          <div className="relative flex items-center justify-center mt-0.5">
+                            <input
+                              type="checkbox"
+                              checked={checked}
+                              onChange={() =>
+                                togglePermission(perm.permissionCode)
+                              }
+                              className="sr-only peer"
+                            />
+                            <div className={`w-5 h-5 rounded-md border-2 transition-all duration-200 flex items-center justify-center ${
+                              checked
+                                ? "bg-gradient-to-br from-green-500 to-emerald-600 border-green-500 shadow-md"
+                                : "border-slate-300 bg-white group-hover:border-purple-400"
+                            }`}>
+                              {checked && (
+                                <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                </svg>
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="flex-1 min-w-0">
+                            <div className={`font-semibold text-sm mb-0.5 transition-colors ${
+                              checked ? "text-green-700" : "text-slate-800"
+                            }`}>
+                              {perm.permissionCode}
+                            </div>
+                            {perm.description && (
+                              <div className="text-xs text-slate-500 leading-relaxed">
+                                {perm.description}
+                              </div>
+                            )}
+                          </div>
+
+                          {checked && (
+                            <div className="flex-shrink-0">
+                              <span className="text-green-500 text-lg">✓</span>
+                            </div>
+                          )}
+                        </label>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
 
       {/* ACTIONS */}
-      <div className="flex justify-end">
+      <div className="flex items-center justify-between bg-gradient-to-r from-slate-50 to-white rounded-xl p-4 border-2 border-slate-200">
+        <div className="text-sm text-slate-600">
+          {hasChanges ? (
+            <span className="flex items-center gap-2 font-medium text-orange-600">
+              <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
+              Unsaved changes
+            </span>
+          ) : (
+            <span className="flex items-center gap-2 text-green-600">
+              <span>✓</span>
+              All changes saved
+            </span>
+          )}
+        </div>
+        
         <button
           onClick={handleSave}
           disabled={!hasChanges || saving}
-          className="px-4 py-2 bg-blue-600 text-white text-sm rounded disabled:opacity-50"
+          className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-500 to-blue-600 text-white text-sm font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
         >
-          {saving ? "Saving…" : "Save Permissions"}
+          {saving ? (
+            <>
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              <span>Saving...</span>
+            </>
+          ) : (
+            <>
+              <span>💾</span>
+              <span>Save Permissions</span>
+            </>
+          )}
         </button>
       </div>
     </div>

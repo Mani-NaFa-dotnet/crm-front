@@ -1,9 +1,10 @@
 import SocialApp from "./App";
-// import "./index.css";
-// import "./App.css";
-// import "../socialCRM/index.css"
-// import "../socialCRM/App.css"
+import "./social-crm.css";
 
 export default function SocialEntry() {
-  return <SocialApp />;
+  return (
+    <div className="social-crm-root">
+      <SocialApp />
+    </div>
+  );
 }

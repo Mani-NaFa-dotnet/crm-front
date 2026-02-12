@@ -2,52 +2,35 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { connectFacebook } from "../api/auth.api";
 import { loadCapabilities } from "../store/capabilities.store";
+import { Button } from "../components/common";
 
 export default function Login() {
   const navigate = useNavigate();
 
   useEffect(() => {
     loadCapabilities()
-      .then((caps) => {
+      .then(caps => {
         if (caps.connected) {
-          navigate("/dashboard", { replace: true });
+          navigate("/crm/socialmedia/dashboard");
         }
       })
       .catch(() => {});
-  }, [navigate]);
-
-  const handleLogout = () => {
-    // Delegate logout to CRM shell
-    window.location.href = "/logout";
-  };
+  }, []);
 
   return (
-    <div style={{ padding: 40, textAlign: "center" }}>
-      {/* Logout always available */}
-      <div style={{ textAlign: "right" }}>
-        <button
-          onClick={handleLogout}
-          style={{
-            background: "transparent",
-            border: "1px solid #ddd",
-            padding: "6px 12px",
-            cursor: "pointer",
-            color:"black"
-          }}
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+      <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">SocialMediaCRM</h1>
+        <p className="text-gray-600 mb-8">Manage Facebook like Zoho Social</p>
+        <Button 
+          variant="primary" 
+          onClick={connectFacebook}
+          size="lg"
+          className="w-full"
         >
-          Logout
-        </button>
+          Connect Facebook
+        </Button>
       </div>
-
-      <h1>SocialMediaCRM</h1>
-      <p>Manage Facebook like Zoho Social</p>
-
-      <button
-        onClick={connectFacebook}
-        style={{ marginTop: 20, padding: "10px 20px" }}
-      >
-        Connect Facebook
-      </button>
     </div>
   );
 }

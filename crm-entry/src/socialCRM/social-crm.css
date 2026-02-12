@@ -1,0 +1,10 @@
+/* ============================================
+   SOCIAL CRM - MINIMAL CUSTOM STYLES
+   Using Tailwind for most styling
+   ============================================ */
+
+.social-crm-root {
+  min-height: 100vh;
+}
+
+/* Any additional custom styles specific to social CRM can go here */

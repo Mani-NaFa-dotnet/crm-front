@@ -1,13 +1,26 @@
 import axios from "axios";
 
-export const BASE_URL = "https://unvolatilised-essie-straight.ngrok-free.dev/api";
+export const BASE_URL = "https://crm.metagensoft.com/api";
+// Old URLs for reference:
+// export const BASE_URL = "http://89.116.20.215:9090/api";
+// export const BASE_URL = "https://unvolatilised-essie-straight.ngrok-free.dev/api";
+// export const BASE_URL = "https://localhost:7015/api";
 
 const api = axios.create({
   baseURL: BASE_URL,
   withCredentials: true
 });
 
-// 🌍 GLOBAL ERROR HANDLING (FROM YOUR CODE)
+// 🔐 Attach JWT automatically
+api.interceptors.request.use(config => {
+  const token = localStorage.getItem("accessToken");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// 🌍 GLOBAL ERROR HANDLING
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -18,7 +31,8 @@ api.interceptors.response.use(
     const { status, data } = error.response;
 
     if (status === 401) {
-      window.location.href = "/";
+      // Redirect to Social CRM login page instead of admin
+      window.location.href = "/crm/socialmedia/login";
       return;
     }
 

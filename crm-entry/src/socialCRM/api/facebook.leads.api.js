@@ -3,12 +3,13 @@ import api from "./apiClient";
 /* ============================
    GET LEAD FORMS (ACTIVE PAGE)
    ============================ */
-export const getLeadForms = async () => {
-  const res = await api.get("/facebook/leads/forms");
-
-  // ✅ backend already returns array
+export const getLeadForms = async (pageId) => {
+  const res = await api.get("/facebook/leads/forms", {
+    params: { pageId }
+  });
   return res.data || [];
 };
+
 
 
 /* ============================
@@ -49,6 +50,20 @@ export const updateLeadStatus = async (leadId, status) => {
   await api.put(
     `/facebook/leads/${leadId}/status`,
     JSON.stringify(status),
+    {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }
+  );
+};
+/* ============================
+   🔥 ASSIGN LEAD (NEW)
+   ============================ */
+export const assignLead = async (leadId, payload) => {
+  await api.put(
+    `/facebook/leads/${leadId}/assign`,
+        JSON.stringify(payload),
     {
       headers: {
         "Content-Type": "application/json"

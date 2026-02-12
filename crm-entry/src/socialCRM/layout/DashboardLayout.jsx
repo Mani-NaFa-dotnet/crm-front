@@ -16,24 +16,13 @@ export default function DashboardLayout() {
 
   return (
     <FacebookPageProvider>
-      <div style={{ display: "flex", height: "100vh" }}>
+      <div className="flex h-screen">
         <Sidebar />
 
-        <div style={{ flex: 1, background: "#f5f6f8" }}>
+        <div className="flex-1 bg-gray-50 overflow-auto">
           <Topbar />
 
-          {/* ⚠️ PAGE NOT SELECTED WARNING */}
-          {caps && !caps.hasActivePage && (
-            <div className="card" style={{ margin: 20 }}>
-              ⚠ No Facebook Page Selected  
-              <br />
-              <a href="/facebook/pages/select">
-                Select a Page
-              </a>
-            </div>
-          )}
-
-          <div style={{ padding: "20px" }}>
+          <div className="p-6">
             <Outlet />
           </div>
         </div>

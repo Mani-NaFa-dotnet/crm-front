@@ -33,7 +33,7 @@ const PostLoginRouter = () => {
   }
 
   if (role.startsWith("SOCIAL")) {
-    return <Navigate to="/crm/socialmedia" replace />;
+    return <Navigate to="/crm/socialmedia/dashboard" replace />;
   }
 
   if (role.startsWith("SALES")) {
