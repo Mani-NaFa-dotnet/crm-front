@@ -69,11 +69,11 @@ const reload = (override = {}) => {
     await loadLeads();
   };
 
-const assignLead = async (leadId, user) => {
+const assignLead = async (leadId, userId, userName, remark) => {
   await assignLeadApi(leadId, {
-    userId: user.id,
-    userName: user.name,
-    remark: "Assigned from Leads page"
+    userId: userId ?? null,
+    userName: userName ?? null,
+    remark: remark ?? ""
   });
 
   await loadLeads({}, true);

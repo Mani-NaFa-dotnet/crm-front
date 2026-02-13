@@ -1,31 +1,30 @@
 import { BASE_URL } from "./apiClient";
 
+// Generic connect function (recommended)
+const connect = (platform) => {
+  const token = localStorage.getItem("accessToken");
+  const returnUrl = window.location.pathname;
+
+  window.location.href =
+    `${BASE_URL}/auth/${platform}/connect?access_token=${token}&returnUrl=${encodeURIComponent(returnUrl)}`;
+};
+
+// Facebook
 export const connectFacebook = () => {
-  const token = localStorage.getItem("accessToken");
-
-  // Pass JWT via query param ONLY for connect step
-  window.location.href =
-    `${BASE_URL}/auth/facebook/connect?access_token=${token}`;
+  connect("facebook");
 };
 
-// Generic platform connection
-export const connectPlatform = (platform) => {
-  const token = localStorage.getItem("accessToken");
-  
-  // Redirect to platform-specific OAuth
-  window.location.href =
-    `${BASE_URL}/auth/${platform}/connect?access_token=${token}`;
-};
-
-// Connect LinkedIn
+// LinkedIn
 export const connectLinkedIn = () => {
-  const token = localStorage.getItem("accessToken");
-  window.location.href =
-    `${BASE_URL}/auth/linkedin/connect?access_token=${token}`;
+  connect("linkedin");
 };
 
-// Connect Instagram (via Facebook)
+// Instagram (uses Facebook OAuth)
 export const connectInstagram = () => {
-  connectFacebook(); // Instagram uses Facebook OAuth
+  connect("facebook");
 };
 
+// Optional generic export
+export const connectPlatform = (platform) => {
+  connect(platform);
+};

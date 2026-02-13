@@ -7,19 +7,15 @@ export default function OAuthCallback() {
 
   useEffect(() => {
     const status = params.get("status");
+      const returnUrl = params.get("returnUrl");
 
-    if (status === "connected") {
-      navigate("/crm/socialmedia/dashboard", { replace: true });
-    }
+  if (status === "connected") {
+    navigate(returnUrl || "/crm/socialmedia/dashboard", { replace: true });
+    return;
+  }
 
-    if (status === "connected_select_resource") {
-      navigate("/crm/socialmedia/dashboard");
-    }
-
-    if (!status) {
-      navigate("/login");
-    }
-  }, []);
+  navigate("/login");
+}, [navigate, params]);
 
   return <p>Finalizing Facebook connection...</p>;
 }
