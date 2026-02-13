@@ -1,7 +1,7 @@
 trigger:
   branches:
     include:
-      - user/mani
+      - vijay/design-and-implement
 
 pool:
   vmImage: 'ubuntu-latest'
