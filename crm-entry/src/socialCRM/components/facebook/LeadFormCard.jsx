@@ -22,14 +22,14 @@ export default function LeadFormCard({
       </div>
 
       <div style={{ display: "flex", gap: 10 }}>
-        <label>
+        {/* <label>
           <input
             type="checkbox"
             checked={form.isEnabled}
             onChange={() => onToggle(form)}
           />
           Enabled
-        </label>
+        </label> */}
 
         <button onClick={() => onSync(form.id)}>
             Sync Old Leads

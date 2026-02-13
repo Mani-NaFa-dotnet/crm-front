@@ -3,10 +3,10 @@ import {
   getLeadForms,
   syncLeadsByForm
 } from "../api/facebook.leads.api";
-import {
-  enableForm,
-  disableForm
-} from "../api/facebook.forms.api";
+// import {
+//   enableForm,
+//   disableForm
+// } from "../api/facebook.forms.api";
 
 import PageSelector from "../components/facebook/PageSelector";
 import LeadFormCard from "../components/facebook/LeadFormCard";
@@ -50,22 +50,22 @@ const loadForms = async (silent = false) => {
   /* ============================
      ENABLE / DISABLE FORM
      ============================ */
-  const toggleForm = async (form) => {
-    if (!activePage) return;
+  // const toggleForm = async (form) => {
+  //   if (!activePage) return;
 
-    try {
-      if (form.isEnabled) {
-        await disableForm(activePage.pageId, form.id);
-      } else {
-        await enableForm(activePage.pageId, form.id);
-      }
+  //   try {
+  //     if (form.isEnabled) {
+  //       await disableForm(activePage.pageId, form.id);
+  //     } else {
+  //       await enableForm(activePage.pageId, form.id);
+  //     }
 
-      // 🔘 manual refresh after toggle
-      await loadForms();
-    } catch {
-      setError("Failed to update form state");
-    }
-  };
+  //     // 🔘 manual refresh after toggle
+  //     await loadForms();
+  //   } catch {
+  //     setError("Failed to update form state");
+  //   }
+  // };
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-6">
@@ -132,7 +132,7 @@ const loadForms = async (silent = false) => {
                 <LeadFormCard
                   key={form.id}
                   form={form}
-                  onToggle={toggleForm}
+                  // onToggle={toggleForm}
                   onSync={syncLeadsByForm}
                 />
               ))

@@ -1,6 +1,6 @@
-import api from "./apiClient";
+// import api from "./apiClient";
 
-export const getUsers = async () => {
-  const res = await api.get("/users");
-  return res.data || [];
-};
+// export const getUsers = async () => {
+//   const res = await api.get("/users");
+//   return res.data || [];
+// };

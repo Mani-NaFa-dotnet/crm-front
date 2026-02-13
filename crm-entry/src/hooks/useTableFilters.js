@@ -1,89 +1,37 @@
-// import { useMemo } from "react";
-
-// /**
-//  * Generic table filtering hook
-//  * Domain is inferred from role prefix:
-//  * HR → HR_*
-//  * SALES → SALES_*
-//  * SOCIAL → SOCIAL_*
-//  *
-//  * @param {Array} users - raw users list
-//  * @param {Object} filters - { search, domainCode, roleCode, status }
-//  */
-// export default function useTableFilters(users, filters) {
-//   const { search, domainCode, roleCode, status } = filters;
-
-//   const filteredUsers = useMemo(() => {
-//     return users.filter((u) => {
-//       /* 🔍 SEARCH */
-//       const matchesSearch =
-//         !search ||
-//         u.username?.toLowerCase().includes(search.toLowerCase()) ||
-//         u.email?.toLowerCase().includes(search.toLowerCase());
-
-//       /* 🏢 DOMAIN (DERIVED FROM ROLE PREFIX) */
-//       const matchesDomain =
-//         !domainCode ||
-//         u.roles?.some((r) =>
-//           r.startsWith(domainCode + "_")
-//         );
-
-//       /* 👤 ROLE (ROLE CODE MATCH) */
-//       const matchesRole =
-//         !roleCode ||
-//         u.roles?.includes(roleCode);
-
-//       /* 🔒 STATUS */
-//       const matchesStatus =
-//         !status ||
-//         u.accountStatus === status;
-
-//       return (
-//         matchesSearch &&
-//         matchesDomain &&
-//         matchesRole &&
-//         matchesStatus
-//       );
-//     });
-//   }, [users, search, domainCode, roleCode, status]);
-
-//   return filteredUsers;
-// }
-
-
 import { useMemo } from "react";
 
-/**
- * Generic table filtering hook
- * Domain inferred from role prefix:
- * HR → HR_*
- * SALES → SALES_*
- * SOCIAL → SOCIAL_*
- */
 export default function useTableFilters(users = [], filters = {}) {
   const { search, domainCode, roleCode, status } = filters;
 
-  const filteredUsers = useMemo(() => {
-    const normalizedSearch = search?.toLowerCase() || "";
+  /* 🔑 Strong normalizer */
+  const normalize = (str = "") =>
+    str.toLowerCase().replace(/[\s_]+/g, "");
+
+  return useMemo(() => {
+    const q = normalize(search);
 
     return users.filter((u) => {
       const roles = Array.isArray(u.roles) ? u.roles : [];
 
       /* 🔍 SEARCH */
       const matchesSearch =
-        !normalizedSearch ||
-        u.username?.toLowerCase().includes(normalizedSearch) ||
-        u.email?.toLowerCase().includes(normalizedSearch);
+        !q ||
+        normalize(u.username).includes(q) ||
+        normalize(u.email).includes(q);
 
-      /* 🏢 DOMAIN (Derived From Role Prefix) */
+      /* 🏢 DOMAIN FILTER (DYNAMIC & FUTURE-PROOF) */
       const matchesDomain =
         !domainCode ||
-        roles.some((r) => r.startsWith(domainCode + "_"));
+        roles.some((r) =>
+          normalize(r).startsWith(normalize(domainCode))
+        );
 
-      /* 👤 ROLE */
+      /* 👤 ROLE FILTER */
       const matchesRole =
         !roleCode ||
-        roles.includes(roleCode);
+        roles.some((r) =>
+          normalize(r).includes(normalize(roleCode))
+        );
 
       /* 🔒 STATUS */
       const matchesStatus =
@@ -98,6 +46,4 @@ export default function useTableFilters(users = [], filters = {}) {
       );
     });
   }, [users, search, domainCode, roleCode, status]);
-
-  return filteredUsers;
 }
