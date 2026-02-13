@@ -27,7 +27,11 @@ import api from "../axios";
 
 export const getAdminUsers = async (params) => {
   const res = await api.get("/api/admin/users", { params });
-  return res.data;
+  return res.data||[];
+};
+export const getUsers = async (params) => {
+  const res = await api.get("/api/admin/users", { params });
+  return res.data.users || [];
 };
 
 export const getAdminUserById = async (userId) => {

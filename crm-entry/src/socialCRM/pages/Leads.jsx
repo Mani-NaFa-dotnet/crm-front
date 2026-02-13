@@ -355,35 +355,58 @@ export default function Leads() {
                           <option value="Lost">Lost</option>
                         </select>
                       </td>
-                      <td className="px-6 py-4">
-                        <select
-                          value={l.assignedToUserId ?? ""}
-                          onChange={e => {
-                            const userId = Number(e.target.value);
-                            const user = users.find(u => u.id === userId);
-                            assignLead(l.id, user ?? null, remarkMap[l.id]);
-                          }}
-                          className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        >
-                          <option value="">Unassigned</option>
-                          {users.map(u => (
-                            <option key={u.id} value={u.id}>
-                              {u.name}
-                            </option>
-                          ))}
-                        </select>
-                      </td>
+<td className="px-6 py-4">
+  <select
+    value={l.assignedToUserId ?? ""}
+    onChange={e => {
+      const value = e.target.value;
+
+      // If Unassigned selected
+        if (!value) {
+          assignLead(l.id, null, null, remarkMap[l.id]);
+          return;
+        }
+
+      const userId = Number(value);
+        const user = users.find(u => u.userId === userId);
+
+      // Directly pass userId instead of whole object (cleaner)
+  assignLead(
+    l.id,
+    user?.userId,
+    user?.name,
+    remarkMap[l.id]
+  );
+    }}
+    className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+  >
+    <option value="">Unassigned</option>
+    {users.map(u => (
+      <option key={u.userId} value={u.userId}>
+        {u.name}
+      </option>
+    ))}
+  </select>
+</td>
+
                       <td className="px-6 py-4">
                         <input
                           type="text"
                           placeholder="Add remark..."
-                          value={remarkMap[l.id] ?? ""}
+                            value={remarkMap[l.id] ?? l.remark ?? ""}
                           onChange={e =>
                             setRemarkMap(prev => ({
                               ...prev,
                               [l.id]: e.target.value
                             }))
-                          }
+                          }  onBlur={() =>
+    assignLead(
+      l.id,
+      l.assignedToUserId,
+      l.assignedToUserName,
+      remarkMap[l.id]
+    )
+  }
                           className="w-40 px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         />
                       </td>
