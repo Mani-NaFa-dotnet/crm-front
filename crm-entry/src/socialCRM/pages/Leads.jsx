@@ -311,6 +311,12 @@ export default function Leads() {
                     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Phone</th>
                     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
                     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Assigned To</th>
+                    
+                    {/* ✅ CREATED AT HEADER */}
+                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">
+                      Created At
+                    </th>
+
                     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Remark</th>
                     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
                   </tr>
@@ -388,6 +394,11 @@ export default function Leads() {
     ))}
   </select>
 </td>
+
+                      {/* ✅ CREATED AT CELL */}
+                      <td className="px-6 py-4 text-sm text-gray-600">
+                        {new Date(l.createdAt).toLocaleString()}
+                      </td>
 
                       <td className="px-6 py-4">
                         <input
